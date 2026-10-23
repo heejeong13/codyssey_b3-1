@@ -1,5 +1,32 @@
 # AWS 웹 서비스 인프라 구축 실습
 
+## 자료 바로 보기
+
+- [아키텍처 구성도](docs/architecture.png)
+- [외부 브라우저 접속 캡처](docs/screenshots/external-access.png)
+- [SSH 접속 캡처](docs/screenshots/ssh-login.png)
+- [IAM 권한 캡처](docs/screenshots/iam-user-permissions.png)
+- [트러블슈팅 기록](docs/troubleshooting.md)
+- [리소스 정리 체크리스트](docs/cleanup-checklist.md)
+
+### 아키텍처 구성도
+
+![VPC, Public Subnet, 인터넷 게이트웨이, 보안 그룹, EC2와 외부 접속 흐름](docs/architecture.png)
+
+### 실습 캡처
+
+**외부 브라우저 접속**
+
+![퍼블릭 IP 주소와 Nginx 기본 페이지](docs/screenshots/external-access.png)
+
+**SSH 접속**
+
+![Ubuntu EC2 인스턴스 SSH 접속 화면](docs/screenshots/ssh-login.png)
+
+**IAM 사용자 권한**
+
+![실습용 IAM 사용자에게 연결된 정책 화면](docs/screenshots/iam-user-permissions.png)
+
 ## 실습 목표
 
 - VPC와 Public Subnet으로 웹 서버용 네트워크를 구성한다.
@@ -45,7 +72,7 @@ VPC: 10.0.0.0/16
         └── Nginx: TCP 80에서 응답
 ```
 
-위 그림은 텍스트 스케치이며 제출용 구성도는 `docs/architecture.png`에 저장했다.
+위 그림은 텍스트 스케치이며 제출용 구성도는 [아키텍처 이미지](docs/architecture.png)에 저장했다.
 
 Public Subnet의 Route Table에는 VPC 내부 통신용 local 경로와 `0.0.0.0/0 → mission-igw` 경로가 있어야 한다. EC2의 인터넷 통신에는 퍼블릭 IPv4, 라우팅, 보안 그룹 설정이 함께 필요하다. Route Table은 통신 경로를 결정하고, 보안 그룹은 인스턴스의 트래픽 허용 여부를 결정한다.
 
@@ -96,13 +123,13 @@ Public Subnet의 Route Table에는 VPC 내부 통신용 local 경로와 `0.0.0.0
 | 실제 접속 URL | `http://43.203.163.3/` |
 | 검증 일시 및 시간대 | 2026-10-24 01:10경 (Asia/Seoul, 서버 응답은 2026-10-23 16:10 UTC) |
 | 브라우저 표시 결과 | `Welcome to nginx!` 정상 표시; 외부 HTTP HEAD 요청도 `200 OK` |
-| 스크린샷 | `docs/screenshots/external-access.png` |
+| 스크린샷 | [외부 브라우저 접속 캡처](docs/screenshots/external-access.png) |
 
 브라우저 화면 캡처에는 주소창의 퍼블릭 IP와 Nginx 기본 페이지가 함께 보인다. 리소스 정리 후에는 해당 URL로 서비스를 제공하지 않으며, 제출 문서에 정리 완료 사실을 기록한다.
 
 ## 트러블슈팅 기록 계획
 
-EC2 외부 HTTP 접속 실패 사례 하나를 `docs/troubleshooting.md`에 다음 순서로 정리했다.
+EC2 외부 HTTP 접속 실패 사례 하나를 [트러블슈팅 기록](docs/troubleshooting.md)에 다음 순서로 정리했다.
 
 1. 증상: 무엇이 실패했는지와 오류 메시지
 2. 가설: 예상 원인과 판단 근거
@@ -117,15 +144,17 @@ EC2 외부 HTTP 접속 실패 사례 하나를 `docs/troubleshooting.md`에 다�
 
 | 파일 | 내용 | 상태 |
 | --- | --- | --- |
-| `README.md` | 설계, 접속 방식, 실제 URL, 검증 결과 | 작성, 정리 결과 반영 대기 |
-| `docs/architecture.png` | 구성 요소 및 외부 트래픽 흐름 | 작성 완료 |
-| `docs/screenshots/external-access.png` | 외부 브라우저 접속 증빙 | 작성 완료 |
-| `docs/troubleshooting.md` | EC2 외부 HTTP 접속 실패 대응 사례 | 작성 완료 |
-| `docs/cleanup-checklist.md` | 종료·삭제 완료 여부 및 근거 | 체크리스트 작성, 과제 실습 종료 후 결과 확인·수정 예정 |
+| [README.md](README.md) | 설계, 접속 방식, 실제 URL, 검증 결과 | 작성, 정리 결과 반영 대기 |
+| [아키텍처 구성도](docs/architecture.png) | 구성 요소 및 외부 트래픽 흐름 | 작성 완료 |
+| [외부 브라우저 접속 캡처](docs/screenshots/external-access.png) | 외부 브라우저 접속 증빙 | 작성 완료 |
+| [SSH 접속 캡처](docs/screenshots/ssh-login.png) | EC2 SSH 접속 증빙 | 작성 완료 |
+| [IAM 권한 캡처](docs/screenshots/iam-user-permissions.png) | 실습용 IAM 사용자 권한 증빙 | 작성 완료 |
+| [트러블슈팅 기록](docs/troubleshooting.md) | EC2 외부 HTTP 접속 실패 대응 사례 | 작성 완료 |
+| [리소스 정리 체크리스트](docs/cleanup-checklist.md) | 종료·삭제 완료 여부 및 근거 | 체크리스트 작성, 과제 실습 종료 후 결과 확인·수정 예정 |
 
 ## 리소스 정리 계획
 
-실제 생성한 리소스의 ID와 정리 상태를 `docs/cleanup-checklist.md`에서 추적한다. 다른 실습이나 사용자의 리소스는 정리 대상에 포함하지 않는다.
+실제 생성한 리소스의 ID와 정리 상태를 [리소스 정리 체크리스트](docs/cleanup-checklist.md)에서 추적한다. 다른 실습이나 사용자의 리소스는 정리 대상에 포함하지 않는다.
 
 1. 접속 결과와 설정 등 제출 증빙을 먼저 저장한다.
 2. EC2를 중지(Stopped)가 아닌 종료(Terminated) 처리한다.
@@ -148,7 +177,7 @@ EC2 외부 HTTP 접속 실패 사례 하나를 `docs/troubleshooting.md`에 다�
 | Route Table | `rtb-0efaf708b859572fe`; `subnet-065413ca66db36815` 명시적 연결, `0.0.0.0/0 → igw-08e9c5ffd8972dcf2` 활성 경로 콘솔에서 확인 |
 | Security Group | `sg-026a47a0127dd4ae9`; 인바운드 SSH 22는 `121.135.181.35/32`, HTTP 80은 `0.0.0.0/0`으로 콘솔에서 확인 |
 | EC2 | `i-05c3c3ccf0450cec1`, Ubuntu 24.04, `t3.micro`, 퍼블릭 IPv4 `43.203.163.3` |
-| SSH | `ubuntu` 사용자로 접속 성공; `docs/screenshots/ssh-login.png` 보관 |
+| SSH | `ubuntu` 사용자로 접속 성공; [SSH 접속 캡처](docs/screenshots/ssh-login.png) 보관 |
 | Nginx | 설치 및 서비스 시작 성공; EC2 내부 `curl -I http://localhost`에서 `HTTP/1.1 200 OK` |
 | 인터넷 아웃바운드 | EC2 내부 `curl -I https://example.com`에서 `HTTP/2 200` |
 | 외부 HTTP | 별도 클라이언트에서 `curl -I http://43.203.163.3/`에 해당하는 HEAD 요청으로 `HTTP/1.1 200 OK` 확인 |
